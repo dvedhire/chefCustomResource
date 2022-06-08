@@ -1,0 +1,56 @@
+Resources:
+
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Role: !GetAtt [LambdaRole, Arn]
+      Runtime: python3.8
+      Timeout: 60
+      Handler: index.handler
+      # Code: ./src
+      Code: 
+        ZipFile: |
+          import json
+          import cfnresponse
+
+          def handler():
+            print( "Received Event:" + json.dumps(event))
+            message = 'Hello {} {}!' .format(event['ResourceProperties']['Firstname'], event['ResourceProperties']['Lastname'])
+            print(json.dumps(message))
+            response = message
+
+
+
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: Custom resource lambda function role
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+         - Effect: Allow
+           Principal:
+            Service: 
+              - lambda.amazonaws.com
+           Action:
+            - sts:AssumeRole
+      Policies: 
+        - PolicyName: root
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: 
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource:
+                  - arn:aws:logs:*:*:*
+
+  CustomResource:
+    Type: Custom::testCustom
+    Properties:
+      ServiceToken: !GetAtt [LambdaFunction, Arn]
+      Firstname: Divya
+      Lastname: Vedhire
