@@ -17,11 +17,11 @@ response = chefClient.create_server(
         ServerName="sampleBoto3",
         InstanceProfileArn="arn:aws:iam::<accountID>:instance-profile/aws-opsworks-cm-ec2-role",
         InstanceType="m5.large",
-        KeyPair="vedhd",
+        KeyPair="yourKeyPair",
         PreferredMaintenanceWindow="Mon:22:00",
         PreferredBackupWindow="06:00",
         ServiceRoleArn="arn:aws:iam::<accountID>:role/service-role/aws-opsworks-cm-service-role",
         SubnetIds=[
-            "subnet-c5cbaa2e",
+            "YourSubnetId",
         ]
     )
