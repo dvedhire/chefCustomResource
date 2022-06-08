@@ -7,19 +7,7 @@ Resources:
       Runtime: python3.8
       Timeout: 60
       Handler: index.handler
-      # Code: ./src
-      Code: 
-        ZipFile: |
-          import json
-          import cfnresponse
-
-          def handler():
-            print( "Received Event:" + json.dumps(event))
-            message = 'Hello {} {}!' .format(event['ResourceProperties']['Firstname'], event['ResourceProperties']['Lastname'])
-            print(json.dumps(message))
-            response = message
-
-
+      Code: ./chef.py
 
 
   LambdaRole:
@@ -52,5 +40,3 @@ Resources:
     Type: Custom::testCustom
     Properties:
       ServiceToken: !GetAtt [LambdaFunction, Arn]
-      Firstname: Divya
-      Lastname: Vedhire
